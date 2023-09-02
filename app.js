@@ -1,42 +1,119 @@
+// Store the URL in a variable
 const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-// function init();
-d3.json(url).then(function (data) {
-  const bb_data = data.samples;
-  console.log(bb_data);
+// Create a function to initialize the page
+function init() {  // start function_1
+  // Fetch the "samples" and "metadata" information from the json data  
+  d3.json(url).then(function(data) {
+    const bb_data = data.samples;
 
-  let dropDownList = bb_data.map(({id})=> id);
-    console.log(dropDownList);
+    // Create a dropdown list of IDs - assistance received from AskBCS
+    let dropDownList = d3.select("#selDataset");
+    bb_data.forEach(({ id }) => {
+      dropDownList.append("option").text(id);
+    });
 
-  let top10_otu_id = bb_data.map(row => row.otu_ids.slice(0, 10));
-  let top10_otu_vals = bb_data.map(row => row.sample_values.slice(0, 10));
-  data1 = [{
-    x: top10_otu_vals[1], 
-    y: top10_otu_id[0],
-    // y: top10_otu_id[0],
-    // axisY : {prefix: "OTU "},
-    type: "bar",
-    orientation: "h",     
-    title: `Top 10 OTUs by Individual: {$top10_otu_id}`,
+    // Get the first ID and update the plots
+    const initialID = bb_data[0].id;
+    updatePlotly(initialID, bb_data);
+  });
+
+// Function to update the plots based on the selected ID
+function updatePlotly(selectedID, bb_data) { // start function_2
+  const selectedData = bb_data.find(item => item.id === selectedID);
+
+    // Create a horizontal bar chart with top 10 OTUs by Individual
+    const top10_otu_id = selectedData.otu_ids.slice(0, 10);
+    const top10_otu_vals = selectedData.sample_values.slice(0, 10);
+
+    let data1 = {
+      x: top10_otu_vals,
+      y: top10_otu_id.map(id => `OTU ${id}`),
+      type: "bar",
+      orientation: "h",
+    };
+
+    let layout1 = {
+      title: `Top 10 OTUs by Individual: ${selectedID}`,
+    };
+
+    // Update the bar chart
+    Plotly.newPlot("bar", [data1], layout1);
+
+    // Create a bubble (scatter) chart which displays each OTU by Individual
+    const x_otu_id = selectedData.otu_ids;
+    const y_otu_vals = selectedData.sample_values;
+
+    var data2 = [{
+      x: x_otu_id,
+      y: y_otu_vals,
+      mode: 'markers',
+      marker: {
+        color: x_otu_id,
+        opacity: 0.6,
+        size: y_otu_vals,
+      },
+    }];
+
+    var layout2 = {
+      title: `OTU Sample Size by Individual: ${selectedID}`,
+    };
+
+    // Update the bubble chart
+    Plotly.newPlot("bubble", data2, layout2);
+  }}
+  
+// // Function to update the element id 'sample-metadata' based on the selected ID
+
+d3.json(url).then(function(data) {
+  const demograpics_data = data.metadata;
+});
+
+  // DEMOGRAPHICS OPTION1
+  // create an array of catgory labels ('demo_data') for panel_body
+  let d_data_lables = Object.keys(data.demographics_data);
+  let d_data = Object.values(data.demographics_data);
+
+function initial_d_data() {
+  let d_data = [{
+    lables: d_data_lables,
+    values: d_data,
+  }]
+}
+
+  // DEMOGRAPHICS OPTION2
+function initial_d_data() {
+  let d_data = [{
+    d_id: `id: ${data.demographics_data.id[1]}`,
+    d_ethnicity: `ethnicity: ${data.demographics_data.ethnicity[1]}`,
+    d_gender: `gender: ${data.demographics_data.gender[1]}`,
+    d_age: `age: ${data.demographics_data.age[1]}`,
+    d_location: `,location: ${data.demographics_data.location[1]}`,
+    d_bbtype: `bbtype: ${data.demographics_data.bbtyp[1]}`,
+    d_wfreq: `wfreq: ${data.demographics_data.qfreq[1]}`,
   }];
+}
 
-  Plotly.newPlot("bar", data1);
-
-  d3.selectAll("#selDataset").on("onchange", updatePlotly);
-//create call function to activate change in drop down menue 
-function updatePlotly(){
-  let dropDownList = d3.select("#selDataset");
-  // let dataset = dropDownList.property(i_id);
-
-  for(let i_id = 0; i_id < dropDownList.length; i_id ++) {
-    d3.select("#selDataset")
-    .append("option")
-    .text(dropDownList[i])
+function update_initial_d_data(){
+  let panel_data = d3.select("#sample-metadata");
+  let update_d_data = initial_d_data.property("value");
+  let update_data = [];
+  if (d_id === initialID){
+    updated_d_data = initial_d_data
+  }
+  else if (d_id === selectedID){
+    updated_d_data = update_d_data
   };
-  //initialise x and y arrays
 
-  if (dataset === "selDataset"){
-      x = top10_otu_vals[0]
-      y = top10_otu_id[0]};
-  }})
-// init()
+//   // Initialize the page
+init();
+// // Add event listener to the dropdown list (element id 'selDataset')
+d3.selectAll("#selDataset").on("change", function () {
+  const selectedID = d3.select("#selDataset").property("value");
+  updatePlotly(selectedID, bb_data); // Pass bb_data to updatePlotly
+});
+
+// Add an event lister to the demographic data (element id 'sample-metadata')
+
+d3.selectAll("#sample-metadata").on("change", update_initial_d_data)// Pass demo_data to updatePlotly
+});
