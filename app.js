@@ -12,7 +12,7 @@ d3.json(url).then(function (data) {
   let top10_otu_vals = bb_data.map(row => row.sample_values.slice(0, 10));
   data1 = [{
     x: top10_otu_vals[1], 
-    y: {"OTU": top10_otu_id[0]},
+    y: top10_otu_id[0],
     // y: top10_otu_id[0],
     // axisY : {prefix: "OTU "},
     type: "bar",
@@ -26,25 +26,17 @@ d3.json(url).then(function (data) {
 //create call function to activate change in drop down menue 
 function updatePlotly(){
   let dropDownList = d3.select("#selDataset");
-  let dataset = dropDownList.property("#selDataset");
+  // let dataset = dropDownList.property(i_id);
 
+  for(let i_id = 0; i_id < dropDownList.length; i_id ++) {
+    d3.select("#selDataset")
+    .append("option")
+    .text(dropDownList[i])
+  };
   //initialise x and y arrays
 
   if (dataset === "selDataset"){
       x = top10_otu_vals[0]
       y = top10_otu_id[0]};
-  }
-});
-d3.selectAll("#selDataset").on("onchange", updatePlotly);
-//create call function to activate change in drop down menue 
-function updatePlotly(){
-  let dropDownList = d3.select("#selDataset");
-  let dataset = dropDownList.property("#selDataset");
-
-  //initialise x and y arrays
-
-  if (dataset === "selDataset"){
-      x = top10_otu_vals[0]
-      y = top10_otu_id[0]};
-  }
+  }})
 // init()
