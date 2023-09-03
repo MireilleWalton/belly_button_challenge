@@ -15,6 +15,9 @@ function init() {  // start function_1
       dropDownList.append("option").text(id);
     });
 
+// Add event listener for change in dropdown list (element selDataset)
+let select = document.getElementById("#selDataset");
+
     // Get the first ID and for use when updating the plots and the demographics panel
     const initialID = bb_data[0].id;
     updateBarPlotly(initialID, bb_data);
@@ -46,10 +49,12 @@ function updateBarPlotly(selectedID, bb_data) { // start function_2
   // Update the bar chart
     Plotly.newPlot("bar", data1, layout1);
   };
-  
+  select.addEventListener("change", updateBarPlotly);
+
+// Create a bubble (scatter) chart which displays each OTU by Individual
 function updateBubblePlotly(selectedID, bb_data) { // start function_2
   const selectedData = bb_data.find(item => item.id === selectedID);
-    // Create a bubble (scatter) chart which displays each OTU by Individual
+    
     const x_otu_id = selectedData.otu_ids;
     const y_otu_vals = selectedData.sample_values;
 
@@ -70,7 +75,7 @@ function updateBubblePlotly(selectedID, bb_data) { // start function_2
     // Update the bubble chart
     Plotly.newPlot("bubble", data2, layout2);
   };
-  
+select.addEventListener("change", updateBubblePlotly);
 
 //  CREAT DEMOGRAPHICS PANEL
 
@@ -87,16 +92,9 @@ d3.json(url).then(function(data) {
     dd_panel.append("h6").text(`${key}: ${value}`);
   });
 });
-
-
-// ADD EVENT LISTENERS
-
-let select = document.getElementById("selDataset");
-select.addEventListener("change", updateBarPlotly);
-select.addEventListener("change", updateBubblePlotly);
 select.addEventListener("change", updateDemogPanel);
 
-
+// ADD EVENT LISTENERS
 // Add event listener to the dropdown list to effect updates to plots and  panel (element ids 'selDataset' and element id 'sample-data')
   // d3.select("#selDataset").on("change", function() {
   // const selectedID = d3.select("#selDataset").property("value");
