@@ -1,4 +1,4 @@
-// Define the URL variable at the top level of your script so that it's accessible by both functions.
+// Define the URL variable at the top level so that it's accessible by all functions.
 const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
 // Function to initialize the page

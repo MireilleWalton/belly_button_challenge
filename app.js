@@ -44,9 +44,9 @@ function updatePlotly(selectedID, bb_data) { // start function_2
     const x_otu_id = selectedData.otu_ids;
     const y_otu_vals = selectedData.sample_values;
 
-    var data2 = [{
+    let data2 = [{
       x: x_otu_id,
-      y: y_otu_vals,
+      y: y_otu_vals.reverse(),
       mode: 'markers',
       marker: {
         color: x_otu_id,
@@ -55,7 +55,7 @@ function updatePlotly(selectedID, bb_data) { // start function_2
       },
     }];
 
-    var layout2 = {
+    let layout2 = {
       title: `OTU Sample Size by Individual: ${selectedID}`,
     };
 
@@ -83,27 +83,39 @@ function initial_d_data() {
 
   // DEMOGRAPHICS OPTION2
 function initial_d_data() {
-  let d_data = [{
-    d_id: `id: ${data.demographics_data.id[1]}`,
-    d_ethnicity: `ethnicity: ${data.demographics_data.ethnicity[1]}`,
-    d_gender: `gender: ${data.demographics_data.gender[1]}`,
-    d_age: `age: ${data.demographics_data.age[1]}`,
-    d_location: `,location: ${data.demographics_data.location[1]}`,
-    d_bbtype: `bbtype: ${data.demographics_data.bbtyp[1]}`,
-    d_wfreq: `wfreq: ${data.demographics_data.qfreq[1]}`,
-  }];
-}
-
-function update_initial_d_data(){
-  let panel_data = d3.select("#sample-metadata");
-  let update_d_data = initial_d_data.property("value");
-  let update_data = [];
-  if (d_id === initialID){
-    updated_d_data = initial_d_data
-  }
-  else if (d_id === selectedID){
-    updated_d_data = update_d_data
+    let d_id: `id: ${data.demographics_data.id[1]}`;
+    let d_ethnicity: `ethnicity: ${data.demographics_data.ethnicity[1]}`;
+    d_gender: `gender: ${data.demographics_data.gender[1]}`;
+    d_age: `age: ${data.demographics_data.age[1]}`;
+    d_location: `,location: ${data.demographics_data.location[1]}`;
+    d_bbtype: `bbtype: ${data.demographics_data.bbtyp[1]}`;
+    d_wfreq: `wfreq: ${data.demographics_data.qfreq[1]}`;
   };
+
+  function update_initial_d_data(sample){
+    d3.json(url).then(function(data) {
+      const demograpics_data = data.metadata;
+   # then get the metadata from sample.json
+   # filter metadata from the sample parameter that is passed into the function
+   #console.log your results
+   
+   }
+
+   // FUNCTION TO UPDATE DEMOGRAPHICS DATA
+function update_initial_d_data(sample){
+  d3.json(url).then(function(data) {
+    const demographics_data = data.metadata;
+    let dd_data = demographics_data.filter(sample)
+  });
+
+//   let update_d_data = initial_d_data.property("value");
+//   let update_data = [];
+//   if (d_id === initialID){
+//     updated_d_data = initial_d_data
+//   }
+//   else if (d_id === selectedID){
+//     updated_d_data = update_d_data
+//   };
 
 //   // Initialize the page
 init();
