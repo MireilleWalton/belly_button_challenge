@@ -45,7 +45,7 @@ function updateBarPlotly(selectedID, bb_data) { // start function_2
     };
 
   // Update the bar chart
-    Plotly.newPlot("bar", data2, layout2);
+    Plotly.newPlot("bar", data1, layout1);
   };
   
 function updateBubblePlotly(selectedID, bb_data) { // start function_2
@@ -92,12 +92,16 @@ d3.json(url).then(function(data) {
 
 // ADD EVENT LISTENERS
 
-// // Add event listeners to the dropdown list and effect updates to plots and  panel (element ids 'selDataset' and element id 'sample-data')
-    d3.select("#bar").on("change", function() {
-      const selectedID = d3.select("#selDataset").property("value");
-      updateBarPlotly(selectedID, bb_data);
-      updateBubblePlotly(selectedID, bb_data);
-      updateDemogPanel(selectedID);
-    });
+// Add event listener to the dropdown list to effect updates to plots and  panel (element ids 'selDataset' and element id 'sample-data')
+  d3.select("#selDataset").on("change", function() {
+  const selectedID = d3.select("#selDataset").property("value");
+    updateBarPlotly(selectedID, bb_data);
+    updateBubblePlotly(selectedID, bb_data);
+    updateDemogPanel(selectedID);
+
+    console.log(selectedID);
+  });
+
+  
   }
 init(); // Initialize the page
