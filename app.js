@@ -22,7 +22,6 @@ function init() {  // start function_1
     updateDemogPanel(initialID)
   });
 
-
 //CREATE CREATE BAR AND BUBBLE PLOTS
 
 // Function to update the plots based on the selected ID
@@ -56,7 +55,7 @@ function updateBubblePlotly(selectedID, bb_data) { // start function_2
 
     let data2 = [{
       x: x_otu_id,
-      y: y_otu_vals.reverse(),
+      y: y_otu_vals,
       mode: 'markers',
       marker: {
         color: x_otu_id,
@@ -88,20 +87,25 @@ d3.json(url).then(function(data) {
     dd_panel.append("h6").text(`${key}: ${value}`);
   });
 });
-}
+
 
 // ADD EVENT LISTENERS
 
+let select = document.getElementById("selDataset");
+select.addEventListener("change", updateBarPlotly);
+select.addEventListener("change", updateBubblePlotly);
+select.addEventListener("change", updateDemogPanel);
+
+
 // Add event listener to the dropdown list to effect updates to plots and  panel (element ids 'selDataset' and element id 'sample-data')
-  d3.select("#selDataset").on("change", function() {
-  const selectedID = d3.select("#selDataset").property("value");
-    updateBarPlotly(selectedID, bb_data);
-    updateBubblePlotly(selectedID, bb_data);
-    updateDemogPanel(selectedID);
+  // d3.select("#selDataset").on("change", function() {
+  // const selectedID = d3.select("#selDataset").property("value");
+  //   updateBarPlotly(selectedID, bb_data);
+  //   updateBubblePlotly(selectedID, bb_data);
+  //   updateDemogPanel(selectedID);
 
-    console.log(selectedID);
-  });
-
-  
-  }
+  //   console.log(selectedID);
+  // });
+  // }
+}}
 init(); // Initialize the page
