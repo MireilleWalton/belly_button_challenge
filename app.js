@@ -15,16 +15,13 @@ function init() {  // start function_1
       dropDownList.append("option").text(id);
     });
 
-// Add event listener for change in dropdown list (element selDataset)
-let select = document.getElementById("#selDataset");
-
     // Get the first ID and for use when updating the plots and the demographics panel
     const initialID = bb_data[0].id;
     updateBarPlotly(initialID, bb_data);
     updateBubblePlotly(initialID, bb_data);
     updateDemogPanel(initialID)
   });
-
+}
 //CREATE CREATE BAR AND BUBBLE PLOTS
 
 // Function to update the plots based on the selected ID
@@ -35,12 +32,12 @@ function updateBarPlotly(selectedID, bb_data) { // start function_2
     const top10_otu_id = selectedData.otu_ids.slice(0, 10);
     const top10_otu_vals = selectedData.sample_values.slice(0, 10);
 
-    let data1 = {
+    let data1 = [{
       x: top10_otu_vals,
       y: top10_otu_id.map(id => `OTU ${id}`),
       type: "bar",
       orientation: "h",
-    };
+    }];
 
     let layout1 = {
       title: `Top 10 OTUs by Individual: ${selectedID}`,
@@ -49,7 +46,7 @@ function updateBarPlotly(selectedID, bb_data) { // start function_2
   // Update the bar chart
     Plotly.newPlot("bar", data1, layout1);
   };
-  select.addEventListener("change", updateBarPlotly);
+
 
 // Create a bubble (scatter) chart which displays each OTU by Individual
 function updateBubblePlotly(selectedID, bb_data) { // start function_2
@@ -75,7 +72,7 @@ function updateBubblePlotly(selectedID, bb_data) { // start function_2
     // Update the bubble chart
     Plotly.newPlot("bubble", data2, layout2);
   };
-select.addEventListener("change", updateBubblePlotly);
+
 
 //  CREAT DEMOGRAPHICS PANEL
 
@@ -91,19 +88,32 @@ d3.json(url).then(function(data) {
   Object.entries(dd_data_result).forEach(([key, value]) => {
     dd_panel.append("h6").text(`${key}: ${value}`);
   });
-});
-select.addEventListener("change", updateDemogPanel);
+})};
 
-// ADD EVENT LISTENERS
-// Add event listener to the dropdown list to effect updates to plots and  panel (element ids 'selDataset' and element id 'sample-data')
-  // d3.select("#selDataset").on("change", function() {
-  // const selectedID = d3.select("#selDataset").property("value");
-  //   updateBarPlotly(selectedID, bb_data);
-  //   updateBubblePlotly(selectedID, bb_data);
-  //   updateDemogPanel(selectedID);
 
-  //   console.log(selectedID);
-  // });
-  // }
-}}
+// ADD EVENT HANDLER - direction received from AskBCS 
+function optionChanged(user_sample_id){ 
+  d3.json(url).then(function(data) {
+    const bb_data = data.samples;
+  updateBarPlotly(user_sample_id, bb_data);
+  updateBubblePlotly(user_sample_id, bb_data);
+  updateDemogPanel(user_sample_id);
+})}; 
+
+let guage_data = [
+	{
+		domain: { 
+      x: [0, 9], 
+      y: [0, 1] },
+		value: 270,
+		title: { text: "Belly Button Washing Frequency" },
+		type: "indicator",
+		mode: "gauge+number"
+	}
+];
+
+var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+Plotly.newPlot('myDiv', data, layout);
+
+
 init(); // Initialize the page
