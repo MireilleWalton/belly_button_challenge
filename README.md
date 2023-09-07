@@ -7,10 +7,12 @@ Student: Mireille Walton, Email: mmj649@gmail.com
 
 **Project submission files included:**
 
-- README.MD
+
+- link to interactive dashboard: https://violetrogue12.github.io/belly_button_challenge/
 - data analysis file (static > js > app.js)
 - belly button analysis dashboard (index.html)
 - example data file (samples.json)
+- README.MD
 
 **Notes**
 Students were tasked with preparing an analysis of belly button bacteria and various vissulations to be incorporated into an interactive dashboard viewable on a webpage (image of completed dashboard below).
