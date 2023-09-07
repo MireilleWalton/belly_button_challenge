@@ -11,6 +11,7 @@ Student: Mireille Walton, Email: mmj649@gmail.com
 - data analysis file (static > js > app.js)
 - html file (index.html)
 - example data file (samples.json)
+- completed dashboard may be viewed at this link (file:///Users/mireille.walton/Desktop/da_bootcamp/ch_proj/belly_button_challenge/index.html)
 
 **Notes**
 Students were tasked with preparing an analysis of belly button bacteria and various vissulations to be incorporated into an interactive dashboard viewable on a webpage (image of completed dashboard below).
